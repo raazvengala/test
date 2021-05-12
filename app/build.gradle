@@ -28,7 +28,7 @@ android {
             buildConfigField "String", "API_KEY", '"1877906"'
 
             //Base url for apis
-            buildConfigField "String", "BASE_URL", '"http://www.omdbapi.com"'
+            buildConfigField "String", "BASE_URL", '"http://www.omdbapi.com/"'
         }
 
         release {
@@ -61,4 +61,8 @@ dependencies {
 
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.picasso:picasso:2.8'
+
 }
