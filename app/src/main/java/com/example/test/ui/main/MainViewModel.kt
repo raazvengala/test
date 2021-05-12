@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
+    val info = MutableLiveData<String>()
     val loadingState = MutableLiveData<Int>()
     private val apiService = RetrofitFactory.create(BuildConfig.BASE_URL)
     private val resultsItemsLiveData = MutableLiveData<List<Entity>>()
@@ -31,9 +32,16 @@ class MainViewModel : ViewModel() {
             delay(500)
             loadingState.postValue(View.VISIBLE)
             kotlin.runCatching {
-                resultsItemsLiveData.postValue(apiService.getMovies(query, BuildConfig.API_KEY)?.Search?: emptyList())
+                apiService.getMovies(query, BuildConfig.API_KEY)?.let {
+                    if(it.Search.isNullOrEmpty()){
+                        info.postValue("No results found!")
+                    }else{
+                        resultsItemsLiveData.postValue(it.Search)
+                    }
+                }?:info.postValue("No results found!")
             }.onFailure {
                 resultsItemsLiveData.postValue(emptyList())
+                info.postValue("Error!")
             }
             loadingState.postValue(View.GONE)
         }

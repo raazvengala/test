@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.test.databinding.MainFragmentBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
@@ -41,10 +42,15 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        binding.ivBack.setOnClickListener {
+            activity?.onBackPressed()
+        }
+
         binding.searchview.setOnQueryTextListener(object:SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchview.clearFocus()
+                binding.searchview.onActionViewCollapsed()
                 return true
             }
 
@@ -64,6 +70,12 @@ class MainFragment : Fragment() {
 
         viewModel.getEntities().observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
+        })
+
+        viewModel.info.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            }
         })
 
     }
