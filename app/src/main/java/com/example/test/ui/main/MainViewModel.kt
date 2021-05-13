@@ -13,7 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel : ViewModel(){
 
     val info = MutableLiveData<String>()
     val loadingState = MutableLiveData<Int>()

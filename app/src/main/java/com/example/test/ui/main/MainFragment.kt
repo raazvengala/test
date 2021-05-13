@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.test.MainActivity
+import com.example.test.data.api.model.Entity
 import com.example.test.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -78,6 +80,13 @@ class MainFragment : Fragment() {
             }
         })
 
+        adapter.setOnEntityClickListener(object:OnEntityClickListener{
+            override fun onEntityClicked(entity: Entity) {
+                if(activity is MainActivity){
+                    (activity as MainActivity).moveToDetail(entity)
+                }
+            }
+        })
     }
 
 

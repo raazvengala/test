@@ -2,7 +2,10 @@ package com.example.test
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.test.data.api.model.BaseEntity
+import com.example.test.data.api.model.Entity
 import com.example.test.databinding.MainActivityBinding
+import com.example.test.ui.main.DetailsFragment
 import com.example.test.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -19,5 +22,12 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+    }
+
+    fun moveToDetail(entity: BaseEntity){
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.container, DetailsFragment.newInstance(entity))
+                .addToBackStack(DetailsFragment::class.java.name)
+                .commit()
     }
 }
