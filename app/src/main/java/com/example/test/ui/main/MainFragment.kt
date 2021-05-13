@@ -87,6 +87,8 @@ class MainFragment : Fragment() {
                 }
             }
         })
+
+        viewModel.performSearch("Movies")
     }
 
 
