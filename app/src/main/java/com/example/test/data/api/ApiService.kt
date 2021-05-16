@@ -9,9 +9,9 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(".")
-    suspend fun getMovies(@Query("s") query:String, @Query("apikey") apiKey:String): SearchResponse?
+    suspend fun getMovies(@Query("s") query: String, @Query("apikey") apiKey: String): SearchResponse?
 
     @GET(".")
-    suspend fun getDetails(@Query("t") query:String, @Query("apikey") apiKey:String): Entity?
+    suspend fun getDetails(@Query("t") query: String, @Query("apikey") apiKey: String): Entity?
 
 }

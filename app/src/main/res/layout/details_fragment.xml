@@ -16,13 +16,13 @@
             android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:src="@color/black"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:adjustViewBounds="true"
-            tools:src="@color/white"
-            />
+            tools:ignore="ContentDescription" />
 
 
         <androidx.constraintlayout.widget.Barrier
@@ -136,7 +136,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_save"
             app:layout_constraintTop_toTopOf="@+id/btn_rate"
             app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
-            />
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/btn_save"
@@ -150,6 +150,6 @@
             app:layout_constraintEnd_toEndOf="@id/gl_right"
             app:layout_constraintTop_toTopOf="@+id/btn_rate"
             app:layout_constraintBottom_toBottomOf="@+id/btn_rate"
-            />
+            tools:ignore="ContentDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

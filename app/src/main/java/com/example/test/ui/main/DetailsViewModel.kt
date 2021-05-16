@@ -18,8 +18,9 @@ class DetailsViewModel : ViewModel() {
     fun getDetails(entity: BaseEntity): LiveData<Entity> {
         val mld = MutableLiveData<Entity>()
 
-        viewModelScope.launch(Dispatchers.IO){
-            mld.postValue(apiService.getDetails(entity.Title?:entity.imdbID?:"", BuildConfig.API_KEY))
+        viewModelScope.launch(Dispatchers.IO) {
+            mld.postValue(apiService.getDetails(entity.Title ?: entity.imdbID
+            ?: "", BuildConfig.API_KEY))
         }
         return mld
     }

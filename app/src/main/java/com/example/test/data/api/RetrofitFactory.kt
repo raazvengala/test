@@ -7,23 +7,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitFactory {
+    private var apiService: ApiService? = null
 
-    fun create(baseUrl:String):ApiService{
+    fun create(baseUrl: String): ApiService {
+        if (apiService == null) {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-
-        val httpClient = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+            val httpClient = OkHttpClient.Builder()
+                    .addInterceptor(logging)
+                    .build()
 
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+            val retrofit = Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(httpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
-        return retrofit.create(ApiService::class.java)
+            apiService = retrofit.create(ApiService::class.java)
+        }
+        return apiService!!
     }
 }

@@ -10,20 +10,20 @@ import com.squareup.picasso.Picasso
 class EntityAdapter : RecyclerView.Adapter<EntityAdapter.EntityViewHolder>() {
 
     private val mList = mutableListOf<Entity>()
-    private var mClickListener:OnEntityClickListener? = null
+    private var mClickListener: OnEntityClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntityViewHolder {
         val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EntityViewHolder(binding, mClickListener)
     }
 
-    fun setItems(list: List<Entity>){
+    fun setItems(list: List<Entity>) {
         mList.clear()
         mList.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun setOnEntityClickListener(listener:OnEntityClickListener){
+    fun setOnEntityClickListener(listener: OnEntityClickListener) {
         this.mClickListener = listener
     }
 
@@ -36,20 +36,20 @@ class EntityAdapter : RecyclerView.Adapter<EntityAdapter.EntityViewHolder>() {
     }
 
 
-    class EntityViewHolder(val binding: ListItemBinding, val mClickListener:OnEntityClickListener?) : RecyclerView.ViewHolder(binding.root) {
+    class EntityViewHolder(val binding: ListItemBinding, val mClickListener: OnEntityClickListener?) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(entity: Entity){
+        fun bind(entity: Entity) {
             Picasso.get().load(entity.Poster).into(binding.ivImage)
             binding.tvTitle.text = entity.Title
             binding.tvDescription.text = entity.Plot
-            binding.root.setOnClickListener{
+            binding.root.setOnClickListener {
                 mClickListener?.onEntityClicked(entity)
             }
         }
     }
 }
 
-interface OnEntityClickListener{
+interface OnEntityClickListener {
     fun onEntityClicked(entity: Entity)
 }
 

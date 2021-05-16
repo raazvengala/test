@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    private var _binding:MainFragmentBinding? = null
+    private var _binding: MainFragmentBinding? = null
 
     private val binding get() = _binding!!
 
@@ -34,6 +34,12 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.performSearch("Movies")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.rvEntities.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -42,14 +48,17 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         binding.ivBack.setOnClickListener {
-            activity?.onBackPressed()
+            if (binding.searchview.query.isNotEmpty()) {
+                binding.searchview.onActionViewCollapsed()
+            } else {
+                activity?.onBackPressed()
+            }
         }
 
-        binding.searchview.setOnQueryTextListener(object:SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchview.clearFocus()
                 binding.searchview.onActionViewCollapsed()
@@ -58,7 +67,7 @@ class MainFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
-                    if(it.isNotEmpty())
+                    if (it.isNotEmpty())
                         viewModel.performSearch(it)
                 }
                 return true
@@ -80,15 +89,13 @@ class MainFragment : Fragment() {
             }
         })
 
-        adapter.setOnEntityClickListener(object:OnEntityClickListener{
+        adapter.setOnEntityClickListener(object : OnEntityClickListener {
             override fun onEntityClicked(entity: Entity) {
-                if(activity is MainActivity){
+                if (activity is MainActivity) {
                     (activity as MainActivity).moveToDetail(entity)
                 }
             }
         })
-
-        viewModel.performSearch("Movies")
     }
 
 
