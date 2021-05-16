@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.test.R
 import com.example.test.data.api.model.BaseEntity
 import com.example.test.data.api.model.Entity
+import com.example.test.data.api.model.Result
 import com.example.test.databinding.DetailsFragmentBinding
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
@@ -40,11 +43,27 @@ class DetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(DetailsViewModel::class.java)
         if (arguments?.containsKey("Entity") == true && arguments?.getParcelable<BaseEntity>("Entity") is BaseEntity) {
             val entity = arguments!!.getParcelable<BaseEntity>("Entity")
-            viewModel.getDetails(entity!!).observe(viewLifecycleOwner, Observer {
-                it?.apply {
-                    showDetails(this)
+            viewModel.detailsLiveData.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    is Result.Loading -> binding.loader.visibility = View.VISIBLE
+
+                    is Result.Success -> {
+                        binding.loader.visibility = View.GONE
+                        it.data?.let { entity ->
+                            showDetails(entity)
+                        }
+                    }
+
+                    is Result.Error -> {
+                        binding.loader.visibility = View.GONE
+                        Snackbar.make(binding.root, it.message
+                                ?: getString(R.string.error), Snackbar.LENGTH_SHORT).show()
+                    }
                 }
+
             })
+
+            viewModel.getDetails(entity!!)
         } else {
             activity?.onBackPressed()
         }

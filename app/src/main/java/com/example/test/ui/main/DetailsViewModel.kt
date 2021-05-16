@@ -1,27 +1,25 @@
 package com.example.test.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.test.BuildConfig
 import com.example.test.data.api.RetrofitFactory
 import com.example.test.data.api.model.BaseEntity
 import com.example.test.data.api.model.Entity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.test.data.api.model.EntityRepoFactory
+import com.example.test.data.api.model.Result
 
 class DetailsViewModel : ViewModel() {
 
-    private val apiService = RetrofitFactory.create(BuildConfig.BASE_URL)
+    private val entityRepo = EntityRepoFactory.getInstance(RetrofitFactory.create(BuildConfig.BASE_URL))
 
-    fun getDetails(entity: BaseEntity): LiveData<Entity> {
-        val mld = MutableLiveData<Entity>()
+    val detailsLiveData = MediatorLiveData<Result<Entity?>>()
 
-        viewModelScope.launch(Dispatchers.IO) {
-            mld.postValue(apiService.getDetails(entity.Title ?: entity.imdbID
-            ?: "", BuildConfig.API_KEY))
+    fun getDetails(entity: BaseEntity) {
+        detailsLiveData.addSource(
+                entityRepo.getDetails(entity.Title ?: entity.imdbID
+                ?: "", BuildConfig.API_KEY)) {
+            detailsLiveData.postValue(it)
         }
-        return mld
     }
 }

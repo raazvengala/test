@@ -2,6 +2,7 @@ package com.example.test.data.api
 
 import com.example.test.data.api.model.Entity
 import com.example.test.data.api.model.SearchResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -9,9 +10,9 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(".")
-    suspend fun getMovies(@Query("s") query: String, @Query("apikey") apiKey: String): SearchResponse?
+    fun getEntities(@Query("s") query: String, @Query("apikey") apiKey: String): Call<SearchResponse?>
 
     @GET(".")
-    suspend fun getDetails(@Query("t") query: String, @Query("apikey") apiKey: String): Entity?
+    fun getDetails(@Query("t") query: String, @Query("apikey") apiKey: String): Call<Entity?>
 
 }

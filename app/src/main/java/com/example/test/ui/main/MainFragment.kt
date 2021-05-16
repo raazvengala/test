@@ -10,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.test.MainActivity
+import com.example.test.R
 import com.example.test.data.api.model.Entity
+import com.example.test.data.api.model.Result
 import com.example.test.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -75,19 +77,29 @@ class MainFragment : Fragment() {
 
         })
 
-        viewModel.loadingState.observe(viewLifecycleOwner, Observer {
-            binding.loader.visibility = it
-        })
+
 
         viewModel.getEntities().observe(viewLifecycleOwner, Observer {
-            adapter.setItems(it)
-        })
+            when (it) {
+                is Result.Loading -> binding.loader.visibility = View.VISIBLE
 
-        viewModel.info.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                is Result.Success -> {
+                    binding.loader.visibility = View.GONE
+                    it.data?.Search?.let {
+                        adapter.setItems(it)
+                    }
+                }
+
+                is Result.Error -> {
+                    binding.loader.visibility = View.GONE
+                    Snackbar.make(binding.root, it.message
+                            ?: getString(R.string.error), Snackbar.LENGTH_SHORT).show()
+                }
+
             }
         })
+
+
 
         adapter.setOnEntityClickListener(object : OnEntityClickListener {
             override fun onEntityClicked(entity: Entity) {

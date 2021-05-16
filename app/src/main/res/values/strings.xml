@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">test</string>
     <string name="rate_movie">Rate Movie</string>
-    <string name="no_results_found">No results found!</string>
     <string name="error">Error!</string>
 </resources>
