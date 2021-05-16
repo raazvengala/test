@@ -25,7 +25,9 @@ open class BaseEntity() : Parcelable {
         return 0
     }
 
+
     companion object CREATOR : Parcelable.Creator<BaseEntity> {
+
         override fun createFromParcel(parcel: Parcel): BaseEntity {
             return BaseEntity(parcel)
         }

@@ -13,38 +13,41 @@ import com.example.test.MainActivity
 import com.example.test.R
 import com.example.test.data.api.model.Entity
 import com.example.test.data.api.model.Result
-import com.example.test.databinding.MainFragmentBinding
+import com.example.test.databinding.ListingFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 
-class MainFragment : Fragment() {
+class ListingFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = ListingFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ListingViewModel
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: ListingFragmentBinding? = null
 
     private val binding get() = _binding!!
 
     private val adapter = EntityAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = ListingFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ListingViewModel::class.java)
         viewModel.performSearch("Movies")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvEntities.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvEntities.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.rvEntities.adapter = adapter
     }
 
@@ -52,7 +55,7 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         binding.ivBack.setOnClickListener {
-            if (binding.searchview.query.isNotEmpty()) {
+            if (binding.searchview.query.isNotEmpty() || !binding.searchview.isIconified) {
                 binding.searchview.onActionViewCollapsed()
             } else {
                 activity?.onBackPressed()
@@ -60,7 +63,7 @@ class MainFragment : Fragment() {
         }
 
         binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchview.clearFocus()
                 binding.searchview.onActionViewCollapsed()
@@ -92,8 +95,10 @@ class MainFragment : Fragment() {
 
                 is Result.Error -> {
                     binding.loader.visibility = View.GONE
-                    Snackbar.make(binding.root, it.message
-                            ?: getString(R.string.error), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        binding.root, it.message
+                            ?: getString(R.string.error), Snackbar.LENGTH_SHORT
+                    ).show()
                 }
 
             }

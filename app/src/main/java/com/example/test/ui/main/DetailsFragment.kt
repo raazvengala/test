@@ -14,6 +14,7 @@ import com.example.test.data.api.model.Result
 import com.example.test.databinding.DetailsFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.BlurTransformation
 
 class DetailsFragment : Fragment() {
 
@@ -32,8 +33,10 @@ class DetailsFragment : Fragment() {
 
     private lateinit var viewModel: DetailsViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = DetailsFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -56,8 +59,10 @@ class DetailsFragment : Fragment() {
 
                     is Result.Error -> {
                         binding.loader.visibility = View.GONE
-                        Snackbar.make(binding.root, it.message
-                                ?: getString(R.string.error), Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root, it.message
+                                ?: getString(R.string.error), Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -71,6 +76,8 @@ class DetailsFragment : Fragment() {
     }
 
     private fun showDetails(entity: Entity) {
+        Picasso.get().load(entity.Poster).placeholder(R.color.black)
+            .transform(BlurTransformation(context)).into(binding.ivBlurimage)
         Picasso.get().load(entity.Poster).into(binding.ivImage)
         binding.tvDescription.text = entity.Plot
         binding.tvTitle.text = entity.Title

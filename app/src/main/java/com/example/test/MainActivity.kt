@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.test.data.api.model.BaseEntity
 import com.example.test.databinding.MainActivityBinding
 import com.example.test.ui.main.DetailsFragment
-import com.example.test.ui.main.MainFragment
+import com.example.test.ui.main.ListingFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
+                    .replace(R.id.container, ListingFragment.newInstance())
                     .commitNow()
         }
     }

@@ -36,7 +36,10 @@ class EntityAdapter : RecyclerView.Adapter<EntityAdapter.EntityViewHolder>() {
     }
 
 
-    class EntityViewHolder(val binding: ListItemBinding, val mClickListener: OnEntityClickListener?) : RecyclerView.ViewHolder(binding.root) {
+    class EntityViewHolder(
+        val binding: ListItemBinding,
+        val mClickListener: OnEntityClickListener?
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entity: Entity) {
             Picasso.get().load(entity.Poster).into(binding.ivImage)
